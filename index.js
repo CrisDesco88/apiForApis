@@ -21,32 +21,55 @@
         
     Finally, display all of the APIs
 */
+const mainContainerEl = document.getElementById("apis-container");
+const categoriesEl = document.getElementById("categories");
 
 async function getAPIs() {
     let response = await fetch('https://api.publicapis.org/entries');
     let data = await response.json();
-    console.log(data.entries.slice(0, 642));
-    return data.entries.slice(0, 642)
+    return data
 }
 
-function getAPIhtml(myAPI) {
+function getApiHtml(myAPI) {
     return `
-        <div class="name"><a href="${myAPI.Link}">${myAPI.API}</a></div>
-        <div class="category">${myAPI.Category}</div>
-        <div class="description">${myAPI.Description}</div>
-        <div class="auth">${myAPI.Auth}</div>
-        <div class="https">${myAPI.HTTPS}</div>
-    `
-}
-
-function displayAPIs(myAPIs) {
-    document.body.innerHTML = `
-        <div class="apis-container">
-            ${myAPIs.map(getAPIhtml).join('')}
+        <div class="my-api">
+            <div class="my-api-name">
+                <a class="api-link" href="${myAPI.Link}" target="_blank">${myAPI.API}</a>
+            </div>
+            <div class="my-api-category">
+                <h2>Categoría</h2>
+                <p>${myAPI.Category}</p> 
+            </div>
+            <div class="my-api-description">
+                <h2>Descripción</h2>
+                <p>${myAPI.Description}</p>
+            </div>
+            <div class="my-api-auth">🔐 Tipo de Auth: ${myAPI.Auth ? myAPI.Auth : "No tiene"}</div>
+            <div class="my-api-https">HTTPS: ${myAPI.HTTPS ? "✅" : "❌"}</div>
         </div>
     `
 }
 
+function displayAPIs(myAPIs) {
+    myAPIs =  myAPIs.entries.slice(0, 642);
+    console.log(myAPIs)
+    mainContainerEl.innerHTML = `
+        <div class="apis-container">
+            ${myAPIs.map(getApiHtml).join('')}
+        </div>
+    `
+   
+   
+}
+
+function apisCategoryFilter(myAPIs) {
+    console.log(myAPIs)
+    
+}
+
+
+
 getAPIs()
     .then(displayAPIs)
+    .then( categoriesEl.addEventListener("change", apisCategoryFilter))
     .catch(e => console.log(`Error: ${e}`))
