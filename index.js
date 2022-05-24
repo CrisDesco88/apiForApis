@@ -44,7 +44,7 @@ function getApiHtml(myAPI) {
                 <h2>Descripción</h2>
                 <p>${myAPI.Description}</p>
             </div>
-            <div class="my-api-auth">🔐 Tipo de Auth: ${myAPI.Auth ? myAPI.Auth : "No tiene"}</div>
+            <div class="my-api-auth">Tipo de Auth: ${myAPI.Auth ? "🔐 " + myAPI.Auth : "🔓 Ninguna"}</div>
             <div class="my-api-https">HTTPS: ${myAPI.HTTPS ? "✅" : "❌"}</div>
         </div>
     `
@@ -52,24 +52,16 @@ function getApiHtml(myAPI) {
 
 function displayAPIs(myAPIs) {
     myAPIs =  myAPIs.entries.slice(0, 642);
-    console.log(myAPIs)
     mainContainerEl.innerHTML = `
         <div class="apis-container">
             ${myAPIs.map(getApiHtml).join('')}
         </div>
-    `
-   
-   
+    `  
 }
 
-function apisCategoryFilter(myAPIs) {
-    console.log(myAPIs)
-    
-}
 
 
 
 getAPIs()
     .then(displayAPIs)
-    .then( categoriesEl.addEventListener("change", apisCategoryFilter))
     .catch(e => console.log(`Error: ${e}`))
